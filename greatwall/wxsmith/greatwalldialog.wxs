@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="greatwallDialog">
+		<title>wxWidgets app</title>
+		<size>480,480</size>
+		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
+		<object class="wxTextCtrl" name="ID_TEXTCTRL_CONSOLE" variable="m_textCtrlConsole" member="yes">
+			<value>Text</value>
+			<pos>8,32</pos>
+			<size>464,312</size>
+			<style>wxTE_PROCESS_ENTER|wxTE_MULTILINE|wxVSCROLL</style>
+		</object>
+	</object>
+</wxsmith>

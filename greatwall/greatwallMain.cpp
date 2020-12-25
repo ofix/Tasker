@@ -88,7 +88,7 @@ bool greatwallDialog::ExecuteGitCommand()
 
 bool greatwallDialog::CompressZipFile()
 {
-    wxString cmd = wxT("E:/work_root/c_projects/greatwall/7-Zip/7z a -bsp1 -r gwsoft_20201224.zip ./gwsoft \
+    wxString cmd = wxT("E:/work_root/c_projects/greatwall/7-Zip/7z a -bsp1 -r gwsoft_20201225.zip ./gwsoft \
                        -xr!runtime\\* -xr!application\\admin\\view_src");
 
     m_process = new wxProcess(this,PROCESS_END_ID);
@@ -142,7 +142,7 @@ void greatwallDialog::OnTimer(wxTimerEvent &event )
     if(m_process != NULL && m_process->IsInputAvailable() && m_in->IsOk()) {
         wxTextInputStream tis(*m_in);
         wxString msg;
-        msg<<tis.ReadLine()<<wxT("\n");
+        msg<<tis.ReadLine()<<wxT("\r\n");
         m_textCtrlConsole->AppendText(msg);
     }
 }

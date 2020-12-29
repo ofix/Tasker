@@ -30,6 +30,7 @@ class greatwallDialog: public wxDialog
         bool CompressZipFile();
         void OnTimer(wxTimerEvent &event);
         void OnProcessEnd(wxProcessEvent& event);
+        bool ExecuteTasks();
     private:
 
         //(*Handlers(greatwallDialog)

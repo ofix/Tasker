@@ -11,6 +11,8 @@
 #include <wx/msgdlg.h>
 #include <wx/utils.h>
 #include <wx/log.h>
+#include "core/Task.h"
+#include "core/TaskExecutor.h"
 
 //(*InternalHeaders(greatwallDialog)
 #include <wx/intl.h>
@@ -83,6 +85,22 @@ bool greatwallDialog::ExecuteGitCommand()
     for(wxArrayString::const_iterator iter = result.begin(); iter != result.end(); iter++) {
         wxLogDebug(wxT("%s"),(*iter).c_str());
     }
+    return true;
+}
+
+bool greatwallDialog::ExecuteTasks()
+{
+    TaskExecutor executor;
+    Task task(wxT("E:/work_root/c_projects/greatwall/7-Zip/7z a -bsp1 -r E:/GwGuard/gwsoft_#date_time#.zip ./gwsoft \
+                       -xr!runtime\\* -xr!application\\admin\\view_src"),"compress gwsoft");
+    wxExecuteEnv env;
+    env.cwd = wxT("E:/work_root/");
+    task.SetEnv(env);
+    executor.AddTask(task);
+    wxExecuteEnv env;
+    env.cwd = wxT("E:/GwGuard")
+    Task task(wxT("cp gwsoft_#date_time#.zip "))
+
     return true;
 }
 

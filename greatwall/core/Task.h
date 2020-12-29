@@ -3,6 +3,8 @@
 
 #include <wx/arrstr.h>
 #include <wx/utils.h>
+#include <wx/list.h>
+#include "Command.h"
 
 enum TASK_STATE {
     WAITING=0,
@@ -12,36 +14,24 @@ enum TASK_STATE {
     FAILED=4
 };
 
+WX_DECLARE_LIST(Command,CommandList);
+WX_DEFINE_LIST(CommandList);
+
 class Task
 {
 public:
-    Task(wxString strCmd,wxString strName);
-    void Sync()
-    {
-        m_sync = true;
-    }
+    Task();
     virtual ~Task();
-    bool IsSync()
-    {
-        return m_sync;
-    }
-    wxExecuteEnv GetEnv()
-    {
-        return m_env;
-    }
-    wxString GetCmd() const;
-    bool Parse(); //任务解析器
+    void AddCmd(Command* ptrCmd);
+    bool Execute();
     wxArrayString GetConsoleOutput() const;
 
 protected:
-    wxString m_name;      //任务名称
-    wxString m_cmdOrigin; //执行的命令
-    wxString m_cmdParsed; //解析后的真实命令
-    wxExecuteEnv m_env;   //环境变量
-    wxArrayString m_consoleOutput; //控制台输出
-    bool m_sync;     //是否是同步任务
-    int m_status;    //当前任务状态
-    int m_executeMilliSeconds; //执行毫秒数
+    Command* m_ptrCurrentCmd;
+    CommandList m_cmdList;          //所有需要执行的命令
+    wxArrayString m_consoleOutput;  //控制台输出
+    int m_status;                   //当前任务状态
+    int m_executeMilliSeconds;      //执行毫秒数
 };
 
 #endif // TASK_H

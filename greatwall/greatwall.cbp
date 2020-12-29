@@ -21,6 +21,7 @@
 					<Add option="-D__WXMSW__" />
 					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
 					<Add directory="core/" />
+					<Add directory="core" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
@@ -56,6 +57,7 @@
 					<Add option="-O2" />
 					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
 					<Add directory="core/" />
+					<Add directory="core" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
@@ -101,6 +103,11 @@
 		<Linker>
 			<Add option="-mthreads" />
 		</Linker>
+		<Unit filename="config/app.config" />
+		<Unit filename="core/Command.cpp" />
+		<Unit filename="core/Command.h" />
+		<Unit filename="core/Task.cpp" />
+		<Unit filename="core/Task.h" />
 		<Unit filename="core/TaskExecutor.cpp" />
 		<Unit filename="core/TaskExecutor.h" />
 		<Unit filename="greatwallApp.cpp" />

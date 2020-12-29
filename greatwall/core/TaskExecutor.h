@@ -22,6 +22,8 @@ class TaskExecutor
         bool Stop(); //停止当前任务
         void ClearTasks(); //清空任务
         bool SetTasks(wxString strTasks);
+        void ReplaceCmd(wxString& strCmd); //替换命令行中的多余字符
+        wxString ParseMetaName(wxString strLine); //解析meta行
         Task GetCurrentTask(); //获取当前正在执行的任务
         void OnTimer(); //定时获取任务控制台输出
         wxArrayString GetConsoleOutput();
@@ -33,10 +35,6 @@ class TaskExecutor
         Task m_taskCurrent; //当前正在执行的任务
         bool m_state; //当前状态
         int m_percent; //当前运行进度
-        wxProcess m_process; //异步进程
-        wxInputStream* m_inputStream;
-        wxOutputStream* m_outputStream;
-        wxProcess* m_process;
     private:
 };
 

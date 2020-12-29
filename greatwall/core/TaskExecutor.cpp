@@ -6,55 +6,93 @@ TaskExecutor::TaskExecutor():
     m_percent(-1),
     m_taskCurrent(NULL),
 {
-    //ctor
+
 }
 
-TaskExecutor::~TaskExecutor()
-{
-    //dtor
-}
 
-TaskExecutor(wxString strTasks):
+TaskExecutor::(wxString strTasks):
     m_strTasks(strTasks)
 {
     ParseTasksStr(m_strTasks);
 }
 
-bool TaskExecutor::ParseTasks(wxString& strTasks){
+TaskExecutor::~TaskExecutor()
+{
+
+}
+
+bool TaskExecutor::ReadFromFile(strFilePath)
+{
+    wxTextFile file;
+    if(!file.Open(strFilePath)) {
+        return false;
+    }
+    int nLines = file.GetLineCount();
+    wxString strCmd;
+    bool bMultiLineCmd = false;
+    wxString strExecAt = wxT("");
+    wxString strOldCmd = wxT("");
+    Task task;
+    for(int i = 0; i<nLines;) {
+        strCmd = wxT("");
+        do {
+            wxString line = file[i++];
+            strExecAt = ParseMetaName(line);
+            if(strExecAt != wxT("")){
+                break;
+            }
+            bMultiLineCmd = (line.Right(1) == wxT("\\"));
+            strCmd += bMultiLineCmd?line.substr(0,line.Len()-1):line;
+        } while(bMultiLineCmd);
+        ReplaceCmd(strCmd);//替换标识符
+        strCmdArr.Add(strCmd);
+        if(strExecAt != wxT("")){
+            Task task
+        }
+    }
+    file.Close();
+    return true;
+}
+
+wxString TaskExecutor::ParseMetaName(wxString strLine)
+{
+    wxString charFirst = line.Left(1);
+    wxString charSecond = line.Mid(1,1);
+    wxString charLast = line.Right(1);
+    wxString strExecAt = wxt("");
+    if(charFirst == wxT("#") && charSecond != wxT("!")) { //任务名称
+        size_t nPos = line.find(wxT(":"));
+        wxString strMeta = line.Mid(1,nPos);
+        if(strMeta == wxT("exec_at")) {
+            strExecAt = line.Mid(nPos);
+        }
+    }
+    return strExecAt;
+}
+
+void TaskExecutor::ReplaceCmd(wxString& strCmd)
+{
+    wxDateTime now = wxDateTime::Now();
+    wxString strNow = now.Format(wxT("%Y_%m_%d %H_%M_%S"));
+    strCmd.Replace(wxT("{date_time}"),strNow,true); //替换所有出现日期的地方
+    strCmd.Replace(wxT("cp "),wxT("copy "),false); //替换拷贝命令
+    strCmd.Replace(wxT("rm "),wxT("del "),false); //替换删除命令
+}
+
+bool TaskExecutor::ParseTasks(wxString& strTasks)
+{
+
     return false;
 }
 
 bool TaskExecutor::ExecuteTask(Task& task)
 {
-    m_process = new wxProcess(this,PROCESS_END_ID);
-    if(task.IsSync()) {
-        m_process->Redirect();
-    }
-    long pid = wxExecute(cmd,wxEXEC_ASYNC,m_process,&task.GetEnv());
-    if( !pid ) {
-        delete m_process;
-        return false;
-    }
-    m_process->SetPid(pid);
-
-    wxLogVerbose("PID of the new process: %ld", m_process->GetPid());
-    m_outputStream = m_process->GetOutputStream();
-    if (!m_outputStream) {
-        wxLogError("Failed to connect to child stdin");
-        return false;
-    }
-
-    m_inputStream = m_process->GetInputStream();
-    if (!m_inputStream) {
-        wxLogError("Failed to connect to child stdout");
-        return false;
-    }
-    m_process->SetNextHandler(this);
-    return true;
+   task.
 }
 
-wxArrayString TaskExecutor::GetConsoleOutput(){
-    if(m_taskCurrent == NULL){
+wxArrayString TaskExecutor::GetConsoleOutput()
+{
+    if(m_taskCurrent == NULL) {
         return wxArrayString(wxT(""));
     }
     return GetCurrentTask().GetConsoleOutput();
@@ -62,7 +100,7 @@ wxArrayString TaskExecutor::GetConsoleOutput(){
 
 void TaskExecutor::OnTimer()
 {
-    if(m_taskCurrent == NULL || m_percent == -1 || m_percent == 100){
+    if(m_taskCurrent == NULL || m_percent == -1 || m_percent == 100) {
         m_timer.Stop();
         m_process = NULL;
     }
@@ -76,7 +114,7 @@ void TaskExecutor::OnTimer()
 
 void greatwallDialog::OnProcessEnd(wxProcessEvent& event)
 {
-    if(m_timer.IsRunning()){
+    if(m_timer.IsRunning()) {
         m_timer.Stop();
         m_process = NULL;
     }
